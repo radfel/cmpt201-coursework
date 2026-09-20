@@ -20,15 +20,25 @@ int main() {
     printf("Please enter some text: ");
     ssize_t charRead = getline(&input, &len, stdin);
 
+    // Make program terminate if users press enter
     if (charRead <= 1) {
       printf("No text was entered. Program terminated.");
       free(input);
       return 0;
     }
 
+    // ensure getline worked properly
+    if (charRead < 0) {
+      perror("getline failed.");
+      free(input);
+      exit(EXIT_FAILURE);
+    }
+
+    // print first token of the sentence
     token = strtok_r(input, " ", &saveptr);
     printf("Tokens:");
 
+    // print all other tokens
     while (token != NULL) {
       printf("\n\t%s", token);
       token = strtok_r(NULL, " ", &saveptr);
